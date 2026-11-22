@@ -1,0 +1,14 @@
+{
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "name": "Creator Deal Agent",
+  "description": "A creator's inbox for brand collaboration offers. Only human-backed agents (Self Agent ID) get in, and each offer carries a small x402 fee in stablecoins on Celo.",
+  "image": "https://REPLACE_WITH_DEPLOYED_URL/logo.png",
+  "services": [
+    { "name": "web", "endpoint": "https://REPLACE_WITH_DEPLOYED_URL" },
+    { "name": "offers", "endpoint": "https://REPLACE_WITH_DEPLOYED_URL/offers" }
+  ],
+  "x402Support": true,
+  "active": true,
+  "supportedTrust": ["reputation"],
+  "registrations": []
+}
