@@ -46,7 +46,7 @@ leave reputation feedback after a deal.
 
 ### Attribution tag
 Every transaction the project sends is tagged with ERC-8021 via `@celo/attribution-tags`
-(`withAttribution`), using the repo code `celo_4a75b42fc868`.
+(`withAttribution`), using the Loops House builder tag `celo_28a711ea2d86` plus the repo code `celo_4a75b42fc868`.
 
 ## Quick start
 

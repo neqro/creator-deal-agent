@@ -91,8 +91,9 @@ transaction it sends carries an ERC-8021 attribution tag.
 - `@celo/attribution-tags`; repo code `codeFromRepo("neqro/creator-deal-agent") = celo_4a75b42fc868`.
 - Every wallet client the project builds is extended with `withAttribution(codes)`, so the ERC-8004
   registration and any demo transaction are tagged from the very first tx.
-- If the hackathon platform assigns a code at registration, it is added to `ATTRIBUTION_CODES`
-  (multi-code suffix) and checked with `verifyTx` after the first transaction.
+- Loops House builder tag `celo_28a711ea2d86` (assigned at registration) is the first code in
+  `ATTRIBUTION_CODES` (multi-code suffix); startup fails if it is missing, and `verifyTx` checks it
+  after the first transaction.
 - x402 settlements are sent by the facilitator, which tags them itself (Schema 2) once that ships.
 
 ## Security

@@ -9,11 +9,13 @@ import { config } from "./config.js";
  */
 export const REPO_SLUG = "neqro/creator-deal-agent";
 export const REPO_CODE = codeFromRepo(REPO_SLUG); // celo_4a75b42fc868
+/** Builder tag assigned by Loops House for "Agents Open for Business"; scoring reads this one. */
+export const LOOPS_CODE = "celo_28a711ea2d86";
 
-export const attributionCodes = config.attributionCodes.length ? config.attributionCodes : [REPO_CODE];
+export const attributionCodes = config.attributionCodes.length ? config.attributionCodes : [LOOPS_CODE, REPO_CODE];
 
-if (!attributionCodes.includes(REPO_CODE)) {
-  console.warn(`[attribution] ${REPO_CODE} (derived from ${REPO_SLUG}) is not in ATTRIBUTION_CODES`);
+if (!attributionCodes.includes(LOOPS_CODE)) {
+  throw new Error(`[attribution] Loops House tag ${LOOPS_CODE} missing from ATTRIBUTION_CODES; untagged txs are never credited`);
 }
 
 /** Raw suffix, for call sites that build calldata by hand. */

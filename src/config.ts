@@ -54,7 +54,7 @@ export const config = {
   x402ApiKey: process.env.X402_API_KEY ?? "",
   selfSybilLimit: Number(env("SELF_SYBIL_LIMIT", "0")),
   selfRateLimitPerMinute: Number(env("SELF_RATE_LIMIT_PER_MINUTE", "10")),
-  attributionCodes: env("ATTRIBUTION_CODES", "celo_4a75b42fc868")
+  attributionCodes: env("ATTRIBUTION_CODES", "celo_28a711ea2d86,celo_4a75b42fc868")
     .split(",")
     .map((c) => c.trim())
     .filter(Boolean),
