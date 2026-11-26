@@ -15,6 +15,15 @@ Offers that pass both gates land in the creator's inbox, where they can accept o
 
 Built for Celo's **Agents Open for Business** hackathon — Track 3: Self Agent ID.
 
+## Live on Celo mainnet (42220)
+
+| What | Value |
+|---|---|
+| Agent wallet (service operator) | [`0x4f92fdFbdC647c57B9A16bD78dA886F4FE9439a8`](https://celoscan.io/address/0x4f92fdFbdC647c57B9A16bD78dA886F4FE9439a8) |
+| ERC-8004 identity | agentId **10152** in the Identity Registry `0x8004A169…a432` · [registration tx](https://celoscan.io/tx/0x9fa273970008e1ae5e1b049fc78bff0ad322f2809350b89cdd2d75e4d69f3153) · [registration file](agent/registration.json) |
+| Attribution tag | `celo_28a711ea2d86` (+ `celo_4a75b42fc868`), verified on the registration tx |
+| Demo brand agent (Self Agent ID) | [`0xaC1cb112515c7B217C19b095C910676C48C426Ae`](https://celoscan.io/address/0xaC1cb112515c7B217C19b095C910676C48C426Ae), Self agentId **220**, `hasHumanProof` and `isProofFresh` = true (registry `0xaC3DF9AB…5944`) |
+
 ## How it works
 
 ```
@@ -105,6 +114,7 @@ TypeScript · Node 20+ · Express 5 · `@selfxyz/agent-sdk` · `@x402/express` /
 - [x] **Day 1** — docs research, architecture, TypeScript skeleton with both gates wired, README
 - [x] **Day 2** — offer API (inbox, accept/decline, activity feed), settlement tx on each offer, 21 tests with mocked verifier and facilitator, Celo Sepolia USDC config
 - [ ] **Day 3** — demo brand agent (verified, pays) + rogue bot agent (refused); creator inbox web UI
+- [x] ERC-8004 registration (agentId 10152) and Self Agent ID for the demo brand agent (agentId 220)
 - [ ] **Day 4** — ERC-8004 registration script, deploy to a public URL, persistent inbox
 - [ ] **Day 5** — mainnet demo with real transactions, demo video, submission
 
