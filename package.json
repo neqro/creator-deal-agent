@@ -4,12 +4,15 @@
   "description": "A creator inbox that only accepts collab offers from human-backed brand agents (Self Agent ID) who pay a small x402 fee in stablecoins on Celo.",
   "type": "module",
   "license": "MIT",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "register:8004": "tsx scripts/register-8004.ts"
   },
   "dependencies": {
     "@celo/attribution-tags": "^0.5.0",
