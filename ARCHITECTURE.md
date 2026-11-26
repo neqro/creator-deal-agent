@@ -35,12 +35,15 @@ transaction it sends carries an ERC-8021 attribution tag.
 
 | Path | Role |
 | --- | --- |
-| `src/app.ts` | Express app. Keeps the raw body (Self signs exact bytes), mounts Gate 1 before Gate 2. |
+| `src/app.ts` | `createApp({ gate1, gate2 })`: keeps the raw body (Self signs exact bytes), mounts Gate 1 before Gate 2. Gates are injected so tests run with mocks. |
+| `src/server.ts` | Wires the real gates (Self verifier, x402 middleware) and starts the server. |
+| `src/activity.ts` | Wraps both gates: logs refused agents and 402 challenges, stores the settlement tx from `PAYMENT-RESPONSE` on the offer. |
+| `src/validate.ts` | Offer input rules (brand, title, message, budgetUsd, optional contact). |
 | `src/selfAgent.ts` | `SelfAgentVerifier` from `@selfxyz/agent-sdk`: network, sybil limit, rate limit. |
 | `src/x402.ts` | `x402ResourceServer` + Celo `HTTPFacilitatorClient`; `POST /offers` priced in USDT, USDC and USA₮. |
 | `src/attribution.ts` | `@celo/attribution-tags`: repo code, suffix, `withAttribution` viem extension. |
-| `src/store.ts` | In-memory inbox (to be replaced by SQLite/KV for the public demo). |
-| `src/routes/offers.ts` | `POST /offers` (brand agents), `GET /offers` (creator). |
+| `src/store.ts` | In-memory inbox + activity log (to be replaced by SQLite/KV for the public demo). |
+| `src/routes/offers.ts` | `POST /offers` (brand agents), `GET /offers`, `GET /offers/:id`, `PATCH /offers/:id` (creator, Bearer `CREATOR_TOKEN`). |
 | `agent/registration.json` | ERC-8004 registration file (template). |
 
 ## Gate 1: Self Agent ID

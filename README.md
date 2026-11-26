@@ -67,6 +67,28 @@ curl -X POST localhost:3000/offers -H 'content-type: application/json' \
 # {"error":"Missing agent authentication headers"}   ← a bot is refused at Gate 1
 ```
 
+## API
+
+| Method & path | Who | What happens |
+| --- | --- | --- |
+| `POST /offers` | brand agent | Gate 1 (Self Agent ID, `401` if unverified) → Gate 2 (x402, `402` until paid) → `201 { offerId }`. Invalid body → `400`, not charged. |
+| `GET /offers` | creator | Inbox, newest first, each offer with the verified agent (`agentId`, address) and the settlement tx. |
+| `GET /offers/:id` | creator | One offer. |
+| `PATCH /offers/:id` | creator | `{ "status": "accepted" \| "declined" }`. |
+| `GET /activity` | creator | Counts and a feed of gate decisions: bots refused, fees requested, payments settled. |
+| `GET /health` | anyone | Network, chain id, fee. |
+
+Creator routes take `Authorization: Bearer $CREATOR_TOKEN`.
+
+Offer body: `brand` (≤80), `title` (≤120), `message` (≤2000), `budgetUsd` (number, optional), `contact` (optional).
+
+## Tests
+
+```bash
+npm test        # 21 tests: validation, both gates with mocks (bot refused, 402, no charge on 400, paid offer delivered), attribution, x402 pricing
+npm run typecheck
+```
+
 Inspect the paywall without paying anything:
 
 ```bash
@@ -81,7 +103,7 @@ TypeScript · Node 20+ · Express 5 · `@selfxyz/agent-sdk` · `@x402/express` /
 ## Roadmap
 
 - [x] **Day 1** — docs research, architecture, TypeScript skeleton with both gates wired, README
-- [ ] **Day 2** — offer API hardening, tests with mocked verifier and facilitator, attribution wiring in scripts
+- [x] **Day 2** — offer API (inbox, accept/decline, activity feed), settlement tx on each offer, 21 tests with mocked verifier and facilitator, Celo Sepolia USDC config
 - [ ] **Day 3** — demo brand agent (verified, pays) + rogue bot agent (refused); creator inbox web UI
 - [ ] **Day 4** — ERC-8004 registration script, deploy to a public URL, persistent inbox
 - [ ] **Day 5** — mainnet demo with real transactions, demo video, submission

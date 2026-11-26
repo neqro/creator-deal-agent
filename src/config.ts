@@ -27,9 +27,10 @@ export const NETWORKS = {
     selfAgentRegistry: "0x043DaCac8b0771DD5b444bCC88f2f8BBDBEdd379",
     erc8004IdentityRegistry: "0x8004A818BFB912233c491871b3d84c89A494BD9e",
     erc8004ReputationRegistry: "0x8004B663056A597Dffe9eCcC1965A193B7388713",
-    // TODO(day 2): add Celo Sepolia token addresses + EIP-712 domains from
-    // https://docs.celo.org/build/agents/x402 (do not guess them).
-    feeTokens: [] as { symbol: string; address: string; name: string; version: string }[],
+    // Celo Sepolia facilitator settles USDC only (https://docs.celo.org/build/agents/x402#celo-configuration).
+    feeTokens: [
+      { symbol: "USDC", address: "0x01C5C0122039549AD1493B8220cABEdD739BC44E", name: "USDC", version: "2" },
+    ],
   },
 } as const;
 
@@ -54,6 +55,9 @@ export const config = {
   x402ApiKey: process.env.X402_API_KEY ?? "",
   selfSybilLimit: Number(env("SELF_SYBIL_LIMIT", "0")),
   selfRateLimitPerMinute: Number(env("SELF_RATE_LIMIT_PER_MINUTE", "10")),
+  /** Bearer token for the creator inbox (GET/PATCH /offers). Empty = open (local dev only). */
+  creatorToken: process.env.CREATOR_TOKEN ?? "",
+  explorerTx: network === "mainnet" ? "https://celoscan.io/tx/" : "https://celo-sepolia.blockscout.com/tx/",
   attributionCodes: env("ATTRIBUTION_CODES", "celo_28a711ea2d86,celo_4a75b42fc868")
     .split(",")
     .map((c) => c.trim())
