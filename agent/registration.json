@@ -4,10 +4,20 @@
   "description": "A creator's inbox for brand collaboration offers. Only human-backed agents (Self Agent ID) get in, and each offer carries a small x402 fee in stablecoins on Celo.",
   "image": "https://opengraph.githubassets.com/1/neqro/creator-deal-agent",
   "services": [
-    { "name": "web", "endpoint": "https://github.com/neqro/creator-deal-agent" }
+    {
+      "name": "web",
+      "endpoint": "https://github.com/neqro/creator-deal-agent"
+    }
   ],
   "x402Support": true,
   "active": true,
-  "supportedTrust": ["reputation"],
-  "registrations": []
+  "supportedTrust": [
+    "reputation"
+  ],
+  "registrations": [
+    {
+      "agentId": 10152,
+      "agentRegistry": "eip155:42220:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
+    }
+  ]
 }
