@@ -25,6 +25,8 @@ Built for Celo's **Agents Open for Business** hackathon — Track 3: Self Agent 
 | ERC-8004 identity | agentId **10152** in the Identity Registry `0x8004A169…a432` · [registration tx](https://celoscan.io/tx/0x9fa273970008e1ae5e1b049fc78bff0ad322f2809350b89cdd2d75e4d69f3153) · [registration file](agent/registration.json) |
 | Attribution tag | `celo_28a711ea2d86` (+ `celo_4a75b42fc868`), verified on the registration tx |
 | Demo brand agent (Self Agent ID) | [`0xaC1cb112515c7B217C19b095C910676C48C426Ae`](https://celoscan.io/address/0xaC1cb112515c7B217C19b095C910676C48C426Ae), Self agentId **220**, `hasHumanProof` and `isProofFresh` = true (registry `0xaC3DF9AB…5944`) |
+| First paid offer (x402, USDT) | 0.01 USDT from the Self-verified brand agent to the agent wallet, settled by the x402 facilitator in block 83920842 · [settlement tx](https://celoscan.io/tx/0x27379d1ad844d1693963e37caedba93f260fe4dad7216e0090ba7928c14039c3) |
+| Bot rejection | Unsigned bot and unregistered agent both get `401` before any payment is asked (`npm run agent:rogue`) |
 
 ## How it works
 
