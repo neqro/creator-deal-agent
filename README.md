@@ -15,6 +15,8 @@ Offers that pass both gates land in the creator's inbox, where they can accept o
 
 Built for Celo's **Agents Open for Business** hackathon — Track 3: Self Agent ID.
 
+**Live demo:** https://neqro.github.io/creator-deal-agent/ (try every path of both gates in the browser, no wallet needed)
+
 ## Live on Celo mainnet (42220)
 
 | What | Value |

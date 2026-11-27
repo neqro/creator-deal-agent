@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Creator Deal Agent · Live demo</title>
+<meta name="description" content="A creator inbox that only lets in human-backed brand agents (Self Agent ID) who pay a small x402 fee on Celo.">
+<style>
+:root{--bg:#0f1115;--card:#171a21;--line:#262a33;--fg:#e8e9ec;--mut:#9aa0ab;--ok:#3ecf8e;--warn:#f5b84b;--bad:#ef6461;--acc:#fcff52}
+*{box-sizing:border-box}body{margin:0;font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--fg)}
+a{color:var(--acc)}main{max-width:1040px;margin:0 auto;padding:32px 20px 60px}
+h1{font-size:28px;margin:0 0 6px}h2{font-size:18px;margin:0 0 12px}.mut{color:var(--mut)}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border:1px solid var(--line);border-radius:99px;color:var(--mut);margin-right:6px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:#20242d;color:var(--fg);border-radius:8px;padding:8px 12px;margin:4px 6px 4px 0}
+button:hover{border-color:var(--acc)}button.pri{background:var(--acc);color:#111;border-color:var(--acc);font-weight:600}
+pre{background:#0b0d11;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:12.5px;margin:10px 0 0;white-space:pre-wrap;word-break:break-word}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.step{flex:1;min-width:120px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;color:var(--mut)}
+.step.ok{border-color:var(--ok);color:var(--ok)}.step.bad{border-color:var(--bad);color:var(--bad)}.step.wait{border-color:var(--warn);color:var(--warn)}
+.offer{border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:10px}.offer b{display:block}
+.st{font-size:12px;padding:1px 7px;border-radius:99px;border:1px solid}.st.new{color:var(--warn);border-color:var(--warn)}.st.accepted{color:var(--ok);border-color:var(--ok)}.st.declined{color:var(--bad);border-color:var(--bad)}
+.stats{display:flex;gap:10px;flex-wrap:wrap}.stat{flex:1;min-width:90px;border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center}.stat b{font-size:22px;display:block}
+table{width:100%;border-collapse:collapse;font-size:13px}td{border-top:1px solid var(--line);padding:7px 4px;vertical-align:top}td:first-child{color:var(--mut);width:38%}
+.note{font-size:13px;color:var(--mut);border-left:3px solid var(--warn);padding:6px 10px;margin-top:14px}
+</style>
+</head>
+<body><main>
+<span class="tag">Celo · Agents Open for Business</span><span class="tag">Track 3 · Self Agent ID</span>
+<h1>Creator Deal Agent</h1>
+<p class="mut">A creator inbox that only lets in brand agents with a real human behind them, and makes every offer cost a cent. Two gates sit in front of <code>POST /offers</code>: <b>Self Agent ID</b> (proof of human) and an <b>x402</b> fee of 0.01 USDT on Celo.</p>
+
+<div class="note">This page replays the API's real responses in your browser, so you can try every path without a wallet. The gate logic, status codes and error bodies mirror <a href="https://github.com/neqro/creator-deal-agent/tree/main/src">src/</a>. Nothing here sends a transaction. The on-chain records below are real and open on Celoscan.</div>
+
+<div class="grid">
+<section class="card">
+<h2>1 · Send an offer as a brand agent</h2>
+<div>
+<button id="bot">Unverified bot</button>
+<button id="unpaid">Verified agent, not paid yet</button>
+<button id="bad">Verified agent, invalid body</button>
+<button class="pri" id="paid">Verified agent, pays 0.01 USDT</button>
+</div>
+<div class="flow"><div class="step" id="g1">Gate 1 · Self Agent ID</div><div class="step" id="g2">Gate 2 · x402 fee</div><div class="step" id="g3">Creator inbox</div></div>
+<pre id="out">Pick a scenario.</pre>
+</section>
+
+<section class="card">
+<h2>2 · Creator inbox</h2>
+<div class="stats">
+<div class="stat"><b id="sBots">0</b><span class="mut">bots refused</span></div>
+<div class="stat"><b id="s402">0</b><span class="mut">fees requested</span></div>
+<div class="stat"><b id="sPaid">0</b><span class="mut">offers paid</span></div>
+</div>
+<div id="inbox"><p class="mut">No offers yet. Only verified, paid offers land here.</p></div>
+</section>
+</div>
+
+<section class="card" style="margin-top:16px">
+<h2>Live on Celo mainnet (42220)</h2>
+<table>
+<tr><td>Agent wallet (service operator)</td><td><a href="https://celoscan.io/address/0x4f92fdFbdC647c57B9A16bD78dA886F4FE9439a8">0x4f92…39a8</a></td></tr>
+<tr><td>ERC-8004 identity</td><td>agentId 10152 · <a href="https://celoscan.io/tx/0x9fa273970008e1ae5e1b049fc78bff0ad322f2809350b89cdd2d75e4d69f3153">registration tx</a> · <a href="https://github.com/neqro/creator-deal-agent/blob/main/agent/registration.json">registration file</a></td></tr>
+<tr><td>Demo brand agent (Self Agent ID)</td><td><a href="https://celoscan.io/address/0xaC1cb112515c7B217C19b095C910676C48C426Ae">0xaC1c…26Ae</a> · Self agentId 220 · hasHumanProof, isProofFresh = true</td></tr>
+<tr><td>Attribution tags</td><td><code>celo_28a711ea2d86</code>, <code>celo_4a75b42fc868</code></td></tr>
+<tr><td>Source, tests, design</td><td><a href="https://github.com/neqro/creator-deal-agent">GitHub</a> · 21 tests (<code>npm test</code>) · <a href="https://github.com/neqro/creator-deal-agent/blob/main/ARCHITECTURE.md">ARCHITECTURE.md</a></td></tr>
+</table>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const st={bots:0,req:0,paid:0,offers:[]};
+const AGENT={agentId:"220",address:"0xaC1cb112515c7B217C19b095C910676C48C426Ae"};
+const BODY={brand:"Acme Coffee",title:"Reel collab, December",message:"Hi! We'd love a 30s reel featuring our new winter blend.",budgetUsd:400};
+function flow(a,b,c){[["g1",a],["g2",b],["g3",c]].forEach(([i,s])=>{$(i).className="step"+(s?" "+s:"")})}
+function show(req,status,body,extra){$("out").textContent=req+"\n\nHTTP "+status+(extra?"\n"+extra:"")+"\n"+JSON.stringify(body,null,2)}
+function stats(){$("sBots").textContent=st.bots;$("s402").textContent=st.req;$("sPaid").textContent=st.paid}
+function render(){if(!st.offers.length)return;$("inbox").innerHTML=st.offers.map(o=>`<div class="offer"><b>${o.brand}: ${o.title}</b><span class="mut">$${o.budgetUsd} · agentId ${o.agent.agentId} · fee tx ${o.payment.transaction.slice(0,10)}… (simulated)</span><br><span class="st ${o.status}">${o.status}</span>${o.status==="new"?` <button onclick="setSt('${o.id}','accepted')">Accept</button><button onclick="setSt('${o.id}','declined')">Decline</button>`:""}</div>`).join("")}
+function setSt(id,s){const o=st.offers.find(x=>x.id===id);o.status=s;render();show(`PATCH /offers/${id}\nAuthorization: Bearer $CREATOR_TOKEN\n${JSON.stringify({status:s})}`,200,o)}
+const hex=n=>"0x"+[...crypto.getRandomValues(new Uint8Array(n))].map(b=>b.toString(16).padStart(2,"0")).join("");
+const post="POST /offers\ncontent-type: application/json\n";
+$("bot").onclick=()=>{st.bots++;stats();flow("bad","","");show(post+JSON.stringify(BODY),401,{error:"Missing agent authentication headers"},"Gate 1 refuses: no Self Agent ID signature. The bot is never asked to pay.")};
+$("unpaid").onclick=()=>{st.req++;stats();flow("ok","wait","");show(post+"x-self-agent-* : signed by agentId 220\n"+JSON.stringify(BODY),402,{x402Version:2,accepts:[{scheme:"exact",network:"eip155:42220",amount:"10000",asset:"USDT",payTo:"0x4f92…39a8"},{scheme:"exact",network:"eip155:42220",amount:"10000",asset:"USDC"}],description:"Send a collaboration offer to the creator's inbox (human-backed agents only)"},"Gate 1 passes. Gate 2 asks for 0.01 USDT (10000 atomic, 6 decimals). The facilitator pays gas.")};
+$("bad").onclick=()=>{flow("ok","ok","bad");show(post+"x-self-agent-* : signed by agentId 220\nPAYMENT-SIGNATURE: <EIP-3009 authorization>\n"+JSON.stringify({brand:"Acme",message:"hi"}),400,{error:"title is required"},"Rejected by validation. x402 settles only on < 400, so the agent is not charged.")};
+$("paid").onclick=()=>{const id="off_"+Math.random().toString(36).slice(2,8);const o={id,...BODY,status:"new",agent:AGENT,payment:{transaction:hex(32),network:"eip155:42220",payer:AGENT.address}};st.offers.unshift(o);st.paid++;stats();render();flow("ok","ok","ok");show(post+"x-self-agent-* : signed by agentId 220\nPAYMENT-SIGNATURE: <EIP-3009 authorization>\n"+JSON.stringify(BODY),201,{ok:true,offerId:id,status:"new"},"Both gates pass. The facilitator settles on Celo and the offer lands in the inbox.")};
+</script>
+</body></html>
