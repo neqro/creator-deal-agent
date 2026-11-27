@@ -115,7 +115,7 @@ TypeScript · Node 20+ · Express 5 · `@selfxyz/agent-sdk` · `@x402/express` /
 
 - [x] **Day 1** — docs research, architecture, TypeScript skeleton with both gates wired, README
 - [x] **Day 2** — offer API (inbox, accept/decline, activity feed), settlement tx on each offer, 21 tests with mocked verifier and facilitator, Celo Sepolia USDC config
-- [ ] **Day 3** — demo brand agent (verified, pays) + rogue bot agent (refused); creator inbox web UI
+- [x] **Day 3** — demo brand agent (verified, pays) + rogue bot agent (refused); creator inbox web UI
 - [x] ERC-8004 registration (agentId 10152) and Self Agent ID for the demo brand agent (agentId 220)
 - [ ] **Day 4** — ERC-8004 registration script, deploy to a public URL, persistent inbox
 - [ ] **Day 5** — mainnet demo with real transactions, demo video, submission

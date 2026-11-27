@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Creator inbox</title>
+<style>body{font:15px system-ui;max-width:760px;margin:2rem auto;padding:0 1rem;color:#1b1b1b}
+.card{border:1px solid #ddd;border-radius:10px;padding:12px 14px;margin:10px 0}.muted{color:#777;font-size:13px}
+button{margin-right:6px}code{font-size:12px}.stats span{margin-right:14px}.bad{color:#b00020}.ok{color:#0a7a3b}</style>
+<h1>Creator inbox</h1>
+<p><input id="t" type="password" placeholder="Creator token" size="30"> <button onclick="save()">Open</button></p>
+<div class="stats" id="stats"></div><h2>Offers (verified + paid)</h2><div id="offers"></div>
+<h2>Gate activity</h2><div id="act"></div>
+<script>
+const $=id=>document.getElementById(id);let tok=localStorage.tok||"";$("t").value=tok;
+const h=()=>({authorization:"Bearer "+tok,"content-type":"application/json"});
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function save(){tok=$("t").value;localStorage.tok=tok;load()}
+async function set(id,status){await fetch("/offers/"+id,{method:"PATCH",headers:h(),body:JSON.stringify({status})});load()}
+async function load(){
+ const [o,a]=await Promise.all([fetch("/offers",{headers:h()}),fetch("/activity",{headers:h()})]);
+ if(!o.ok){$("offers").textContent="Token required";return}
+ const offers=await o.json(),act=await a.json();
+ $("stats").innerHTML=Object.entries(act.stats||{}).map(([k,v])=>`<span><b>${esc(v)}</b> ${esc(k)}</span>`).join("");
+ $("offers").innerHTML=offers.map(x=>`<div class="card"><b>${esc(x.title)}</b> · ${esc(x.brand)} · $${esc(x.budgetUsd)}
+ <span class="muted">[${esc(x.status)}]</span><p>${esc(x.message)}</p>
+ <div class="muted">Self Agent ID #${esc(x.agent.agentId)} <code>${esc(x.agent.address)}</code>${x.payment?` · fee tx <a href="https://celoscan.io/tx/${esc(x.payment.transaction)}" target="_blank" rel="noopener">${esc(x.payment.transaction.slice(0,10))}…</a>`:""}</div>
+ <p><button onclick="set('${esc(x.id)}','accepted')">Accept</button><button onclick="set('${esc(x.id)}','declined')">Decline</button></p></div>`).join("")||"<p class=muted>No offers yet.</p>";
+ $("act").innerHTML=(act.recent||[]).map(e=>`<div class="muted"><span class="${e.kind==='refused_unverified'?'bad':'ok'}">${esc(e.kind)}</span> ${esc(e.at.slice(11,19))} ${esc(e.detail)}</div>`).join("");
+}
+if(tok)load();setInterval(()=>tok&&load(),5000);
+</script></html>

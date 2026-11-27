@@ -117,3 +117,15 @@ describe("creator inbox", () => {
     expect(a.recent.some((e: { detail: string }) => e.detail === "Agent not verified on-chain")).toBe(true);
   });
 });
+
+describe("inbox UI", () => {
+  it("serves /inbox html", async () => {
+    const { app } = createApp({ gate1: (_q, _s, n) => n(), gate2: (_q, _s, n) => n() });
+    const srv = app.listen(0);
+    const port = (srv.address() as { port: number }).port;
+    const r = await fetch(`http://localhost:${port}/inbox`);
+    srv.close();
+    expect(r.status).toBe(200);
+    expect(await r.text()).toContain("Creator inbox");
+  });
+});

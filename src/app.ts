@@ -1,4 +1,5 @@
 import express, { type RequestHandler } from "express";
+import { fileURLToPath } from "node:url";
 import { offersRouter, requireCreator } from "./routes/offers.js";
 import { createInbox, type Inbox } from "./store.js";
 import { recordGate1, recordGate2 } from "./activity.js";
@@ -26,6 +27,11 @@ export function createApp(deps: AppDeps) {
       },
     }),
   );
+
+  // Creator inbox web UI (static; data calls need the creator token).
+  app.get("/inbox", (_req, res) => {
+    res.sendFile(fileURLToPath(new URL("../public/inbox.html", import.meta.url)));
+  });
 
   app.get("/health", (_req, res) => {
     res.json({ ok: true, ...(deps.info ?? {}) });

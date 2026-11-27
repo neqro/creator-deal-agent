@@ -12,6 +12,8 @@
     "start": "tsx src/server.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "agent:brand": "tsx agents/brandAgent.ts",
+    "agent:rogue": "tsx agents/rogueBot.ts",
     "register:8004": "tsx scripts/register-8004.ts"
   },
   "dependencies": {
