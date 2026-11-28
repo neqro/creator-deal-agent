@@ -22,7 +22,7 @@ async function load(){
  <span class="muted">[${esc(x.status)}]</span><p>${esc(x.message)}</p>
  <div class="muted">Self Agent ID #${esc(x.agent.agentId)} <code>${esc(x.agent.address)}</code>${x.payment?` · fee tx <a href="https://celoscan.io/tx/${esc(x.payment.transaction)}" target="_blank" rel="noopener">${esc(x.payment.transaction.slice(0,10))}…</a>`:""}</div>
  <p><button onclick="set('${esc(x.id)}','accepted')">Accept</button><button onclick="set('${esc(x.id)}','declined')">Decline</button></p></div>`).join("")||"<p class=muted>No offers yet.</p>";
- $("act").innerHTML=(act.recent||[]).map(e=>`<div class="muted"><span class="${e.kind==='refused_unverified'?'bad':'ok'}">${esc(e.kind)}</span> ${esc(e.at.slice(11,19))} ${esc(e.detail)}</div>`).join("");
+ $("act").innerHTML=(act.recent||[]).map(e=>`<div class="muted"><span class="${e.kind==='refused_unverified'?'bad':'ok'}">${esc(e.kind)}</span> ${esc(new Date(e.at).toLocaleString())} ${esc(e.detail)}</div>`).join("");
 }
 if(tok)load();setInterval(()=>tok&&load(),5000);
 </script></html>

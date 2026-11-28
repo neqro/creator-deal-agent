@@ -1,4 +1,5 @@
-/** In-memory creator inbox + activity log. Swap for SQLite/KV before the public demo (day 4). */
+/** Creator inbox + activity log. In memory, optionally persisted to a JSON file (DATA_FILE) so restarts keep offers. */
+import { existsSync, readFileSync, writeFileSync, renameSync } from "node:fs";
 export type OfferStatus = "new" | "accepted" | "declined";
 
 export interface Offer {
@@ -25,14 +26,33 @@ export interface Activity {
   offerId?: string;
 }
 
-export function createInbox() {
+export function createInbox(file: string | undefined = process.env.DATA_FILE) {
   const offers = new Map<string, Offer>();
   const activity: Activity[] = [];
+  if (file && existsSync(file)) {
+    try {
+      const d = JSON.parse(readFileSync(file, "utf8"));
+      for (const o of d.offers ?? []) offers.set(o.id, o);
+      activity.push(...(d.activity ?? []));
+    } catch {
+      /* corrupt file: start empty */
+    }
+  }
+  const save = () => {
+    if (!file) return;
+    try {
+      writeFileSync(file + ".tmp", JSON.stringify({ offers: [...offers.values()], activity }));
+      renameSync(file + ".tmp", file);
+    } catch {
+      /* best effort */
+    }
+  };
 
   return {
     add(o: Omit<Offer, "id" | "createdAt" | "status">): Offer {
       const offer: Offer = { ...o, id: crypto.randomUUID(), createdAt: new Date().toISOString(), status: "new" };
       offers.set(offer.id, offer);
+      save();
       return offer;
     },
     get(id: string): Offer | undefined {
@@ -44,15 +64,18 @@ export function createInbox() {
     setStatus(id: string, status: OfferStatus): Offer | undefined {
       const o = offers.get(id);
       if (o) o.status = status;
+      save();
       return o;
     },
     setPayment(id: string, payment: Offer["payment"]): void {
       const o = offers.get(id);
       if (o) o.payment = payment;
+      save();
     },
     log(kind: ActivityKind, detail: string, offerId?: string): void {
       activity.unshift({ at: new Date().toISOString(), kind, detail, ...(offerId ? { offerId } : {}) });
       if (activity.length > 200) activity.length = 200;
+      save();
     },
     activity(): Activity[] {
       return [...activity];
